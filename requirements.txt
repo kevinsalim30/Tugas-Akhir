@@ -6,6 +6,7 @@ plotly
 pandas
 scikit-learn
 SARIMAX
+statsmodel
 Adfuller
 sequential
 LSTM
