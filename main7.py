@@ -1,15 +1,5 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error, mean_absolute_error
-from statsmodels.tsa.statespace.sarimax import SARIMAX
-import matplotlib.pyplot as plt
-from statsmodels.tsa.stattools import adfuller
-from sklearn.metrics import mean_absolute_percentage_error
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense
-import openpyxl
+
 
 # Streamlit App
 st.title("Aplikasi Dashboard Prediksi Data Penerbangan")
