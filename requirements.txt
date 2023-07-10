@@ -1,8 +1,7 @@
-numpy
-streamlit
-seaborn
-matplotlib
-plotly
-pandas
-scikit-learn
-statsmodel
+streamlit==1.24.1
+pandas==1.3.0
+numpy==1.21.0
+statsmodels==0.12.2
+matplotlib==3.4.2
+tensorflow==2.6.0
+openpyxl==3.0.7
