@@ -34,6 +34,9 @@ if prediction_type == "Prediksi Harian":
             # Input jumlah periode/hari kedepan yang ingin diprediksi
             num_periods = st.sidebar.number_input("Masukkan jumlah periode/hari kedepan yang ingin diprediksi", min_value=1, step=1)
 
+            # Checkbox for displaying evaluation results
+            show_evaluation = st.sidebar.checkbox("Tampilkan Akurasi  Nilai Evaluasi Model (RMSE dan MAPE)")
+
             # Tombol prediksi
             if st.sidebar.button("Prediksi"):
                 # Normalisasi data
@@ -133,11 +136,12 @@ if prediction_type == "Prediksi Harian":
                                                 "RNN": rnn_pred.flatten()})
                 st.write(predictions_df)
 
-                st.subheader("Evaluasi Model")
-                evaluations = pd.DataFrame({"Model": ["SARIMA", "RNN"],
-                                            "RMSE": [test_rmse_sarima, test_rmse_rnn],
-                                            "MAPE": [test_mape_sarima, test_mape_rnn]})
-                st.write(evaluations)
+                if show_evaluation:  # Show evaluation results if the checkbox is checked
+                    st.subheader("Evaluasi Model")
+                    evaluations = pd.DataFrame({"Model": ["SARIMA", "RNN"],
+                                                "RMSE": [test_rmse_sarima, test_rmse_rnn],
+                                                "MAPE": [test_mape_sarima, test_mape_rnn]})
+                    st.write(evaluations)
 
                 # Simpan hasil prediksi ke fileCSV
                 predictions_df.to_csv("hasil_prediksi.csv", index=False)
@@ -173,6 +177,9 @@ elif prediction_type == "Prediksi Mingguan":
 
             # Input jumlah minggu kedepan yang ingin diprediksi
             num_weeks = st.sidebar.number_input("Masukkan jumlah minggu kedepan yang ingin diprediksi", min_value=1, step=1)
+
+            # Checkbox for displaying evaluation results
+            show_evaluation_weekly = st.sidebar.checkbox("Tampilkan Akurasi Nilai Evaluasi Model (RMSE dan MAPE)")
 
             # Tombol prediksi
             if st.sidebar.button("Prediksi"):
@@ -237,7 +244,7 @@ elif prediction_type == "Prediksi Mingguan":
                 model_rnn_weekly.add(Dense(1))
                 model_rnn_weekly.compile(optimizer='adam', loss='mse')
                 model_rnn_weekly.fit(X_train_weekly, y_train_weekly, epochs=100, batch_size=16, verbose=1)
-                
+
                 # Prediksi dengan model SARIMA
                 sarima_pred_weekly = model_fit_sarima_weekly.forecast(steps=num_weeks)
                 sarima_pred_weekly = scaler_weekly.inverse_transform(sarima_pred_weekly.reshape(-1, 1))
@@ -272,11 +279,12 @@ elif prediction_type == "Prediksi Mingguan":
                                                     "RNN": rnn_pred_weekly.flatten()})
                 st.write(predictions_df_weekly)
 
-                st.subheader("Evaluasi Model")
-                evaluations_weekly = pd.DataFrame({"Model": ["SARIMA", "RNN"],
-                                                    "RMSE": [test_rmse_sarima_weekly, test_rmse_rnn_weekly],
-                                                    "MAPE": [test_mape_sarima_weekly, test_mape_rnn_weekly]})
-                st.write(evaluations_weekly)
+                if show_evaluation_weekly:  # Show evaluation results if the checkbox is checked
+                    st.subheader("Evaluasi Model")
+                    evaluations_weekly = pd.DataFrame({"Model": ["SARIMA", "RNN"],
+                                                        "RMSE": [test_rmse_sarima_weekly, test_rmse_rnn_weekly],
+                                                        "MAPE": [test_mape_sarima_weekly, test_mape_rnn_weekly]})
+                    st.write(evaluations_weekly)
 
                 # Simpan hasil prediksi ke file CSV
                 predictions_df_weekly.to_csv("hasil_prediksi_mingguan.csv", index=False)
@@ -296,3 +304,4 @@ elif prediction_type == "Prediksi Mingguan":
                 plt.title(f'Train-Test Comparison - Jumlah {selected_feature_weekly}')
                 plt.legend()
                 st.pyplot(plt)
+
